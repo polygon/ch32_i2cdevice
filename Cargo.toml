@@ -1,0 +1,44 @@
+[package]
+name = "ch32_i2cdev"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ch32-hal = { git = "https://github.com/ch32-rs/ch32-hal.git", features = [
+    "ch32v003f4p6",
+    "memory-x",
+    "embassy",
+    "time-driver-tim2",
+    "rt",
+] }
+embassy-executor = { version = "0.6.0", features = [
+    "integrated-timers",
+    "arch-spin",
+    "executor-thread",
+    "nightly"
+] }
+embassy-time = { version = "0.3.0" }
+embassy-sync = { version = "0.6.2" }
+critical-section = "1.2.0"
+defmt = { version = "1.0.1" }
+
+# This is okay because we should automatically use whatever ch32-hal uses
+qingke = "*"
+qingke-rt = { version = "*", features = ["highcode"] }
+
+
+panic-halt = "1.0"
+
+embedded-hal = "1.0.0"
+
+[profile.release]
+strip = false   # symbols are not flashed to the microcontroller, so don't strip them.
+lto = true
+opt-level = "s" # Optimize for size.
+panic = 'abort'
+
+[profile.dev]
+strip = false   # symbols are not flashed to the microcontroller, so don't strip them.
+lto = true
+opt-level = 2 # Optimize for size.
+panic = 'abort'
